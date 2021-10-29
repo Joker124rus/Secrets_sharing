@@ -1,0 +1,34 @@
+﻿@page
+@model Secrets_sharing.Pages.RegistrationModel
+@{
+    ViewData["Title"] = "Registration";
+}
+<h3>@ViewData["Title"]</h3>
+<form method="post">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="Input.Email"></label><br />
+                <input asp-for="Input.Email" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                <label asp-for="Input.Password"></label><br />
+                <input asp-for="Input.Password" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Input.PasswordConfirm"></label><br />
+                <input asp-for="Input.PasswordConfirm" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Register</button>
+            </td>
+        </tr>
+    </table>
+</form>
