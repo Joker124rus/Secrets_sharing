@@ -8,5 +8,6 @@ namespace Secrets_sharing.Models
 {
     public class User : IdentityUser
     {
+        public List<File> Files { get; set; }
     }
 }

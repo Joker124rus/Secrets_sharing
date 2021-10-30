@@ -1,0 +1,22 @@
+﻿@page
+@model Secrets_sharing.Pages.UploadModel
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<h3>@ViewData["Title"]</h3>
+<form method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="Input.File"></label><br />
+                <input asp-for="Input.File" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Upload</button>
+            </td>
+        </tr>
+    </table>
+</form>

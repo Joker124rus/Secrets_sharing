@@ -1,0 +1,34 @@
+﻿@page
+@model Secrets_sharing.Pages.FilesModel
+@{
+    ViewData["Title"] = "Files";
+}
+<h3>@ViewData["Title"]</h3>
+
+@{
+    if (Model.Files is null)
+    {
+        <lable>Failed loading files from database.</lable>
+    }
+    else if (Model.Files.Count == 0)
+    {
+        <label>You do not have files.</label>
+    }
+    else
+    {
+        <table>
+            @foreach (var f in Model.Files)
+            {
+                <tr>
+                    <td>
+                        @f.Name
+                    </td>
+                    <td>
+                        <a asp-page="Download" asp-route-Url="@f.Url">Download</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+}
+<a asp-page="Upload">Upload a new file</a>
