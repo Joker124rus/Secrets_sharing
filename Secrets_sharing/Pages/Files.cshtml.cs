@@ -21,10 +21,10 @@ namespace Secrets_sharing.Pages
             _context = context;
         }
         public List<File> Files { get; set; }
-        public void OnGet()
+        public  void OnGet()
         {
-            var user = _userManager.GetUserAsync(User).Result;
-            _context.Entry(user).Collection(u => u.Files).Load();
+            var user = _userManager.GetUserAsync(User).Result; // Get current user
+            _context.Entry(user).Collection(u => u.Files).Load(); // Get related to current user collection of files
             Files = user.Files;
         }
     }

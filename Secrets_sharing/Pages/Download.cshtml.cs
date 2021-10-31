@@ -26,6 +26,11 @@ namespace Secrets_sharing.Pages
             var file = _context.Files.First(f => f.Url == FileUrl);
             var path = System.IO.Path.GetTempFileName();
             System.IO.File.WriteAllBytes(path, file.Bytes);
+            if (file.DeleteOnDownload == true)
+            {
+                _context.Files.Remove(file);
+                _context.SaveChanges();
+            }
             return PhysicalFile(path, MimeTypes.GetMimeType(path), file.Name);
         }
     }

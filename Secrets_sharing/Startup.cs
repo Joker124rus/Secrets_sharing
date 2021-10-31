@@ -27,10 +27,10 @@ namespace Secrets_sharing
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection)); // Add db context
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>(); // Add user
             services.AddRazorPages();
-            services.Configure<IdentityOptions>(options =>
+            services.Configure<IdentityOptions>(options => // Identity settings
             {
                 // Password settings
                 options.Password.RequireDigit = false;
@@ -80,6 +80,7 @@ namespace Secrets_sharing
 
             app.UseRouting();
 
+            // Auth for identity
             app.UseAuthentication();
             app.UseAuthorization();
 

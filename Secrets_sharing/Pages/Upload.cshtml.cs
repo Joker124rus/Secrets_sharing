@@ -28,6 +28,9 @@ namespace Secrets_sharing.Pages
             [Display(Name = "File")]
             [DataType(DataType.Upload)]
             public IFormFile File { get; set; }
+
+            [Display(Name = "Do you want to delete file on download?")]
+            public bool DeleteOnDownload { get; set; }
         }
         [BindProperty]
         public InputModel Input { get; set; }
@@ -54,27 +57,20 @@ namespace Secrets_sharing.Pages
             }
 
         }
-        private static byte[] DownloadFile(string absoluteUrl)
-        {
-            using (var client = new System.Net.WebClient())
-            {
-                return client.DownloadData(absoluteUrl);
-            }
-        }
         public void OnGet()
         {
         }
         public async Task<IActionResult> OnPostAsync()
         {
             var currentUser = await _userManager.GetUserAsync(User); // Get current user
-            var file = new Models.File {Name = Input.File.FileName, Url = GenerateUrl() };
-            byte[] imageData = null;
+            var file = new Models.File {Name = Input.File.FileName, Url = GenerateUrl(), DeleteOnDownload = Input.DeleteOnDownload }; // Create new file object
+            byte[] imageData = null; // Array of bytes
 
-            using (var binaryReader = new BinaryReader(Input.File.OpenReadStream()))
+            using (var binaryReader = new BinaryReader(Input.File.OpenReadStream())) // Create reader to read bytes
             {
-                imageData = binaryReader.ReadBytes((int)Input.File.Length);
+                imageData = binaryReader.ReadBytes((int)Input.File.Length); // Write bytes to array
             }
-            file.Bytes = imageData;
+            file.Bytes = imageData; 
 
             _context.Entry(currentUser).Collection(u => u.Files).Load();
             currentUser.Files.Add(file);

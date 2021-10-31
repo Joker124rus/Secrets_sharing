@@ -12,7 +12,7 @@ namespace Secrets_sharing.Models
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            // Database.EnsureCreated();
+            // Database.EnsureCreated(); // Create database if it doesn't exist
         }
         public DbSet<File> Files { get; set; }
     }

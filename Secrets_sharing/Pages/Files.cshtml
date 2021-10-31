@@ -9,10 +9,12 @@
     if (Model.Files is null)
     {
         <lable>Failed loading files from database.</lable>
+        <br />
     }
     else if (Model.Files.Count == 0)
     {
         <label>You do not have files.</label>
+        <br />
     }
     else
     {
@@ -21,14 +23,19 @@
             {
                 <tr>
                     <td>
+                        <label>Name: </label>
                         @f.Name
                     </td>
                     <td>
-                        <a asp-page="Download" asp-route-Url="@f.Url">Download</a>
+                        <label>Download Link: </label>
+                        <input id="DownloadLink" type="url" value="@Url.PageLink(pageName: "Download", values: new { FileUrl =  f.Url })" />
                     </td>
                 </tr>
             }
         </table>
     }
 }
-<a asp-page="Upload">Upload a new file</a>
+@if (Model.Files is not null)
+    {
+        <a asp-page="Upload">Upload a new file</a>
+    }

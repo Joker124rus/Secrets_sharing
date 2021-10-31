@@ -12,5 +12,6 @@ namespace Secrets_sharing.Models
         public byte[] Bytes { get; set; }
         public string Url { get; set; }
         public User User { get; set; }
+        public bool DeleteOnDownload { get; set; }
     }
 }
