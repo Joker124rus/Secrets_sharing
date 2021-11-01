@@ -1,26 +1,26 @@
 ﻿@page
-@model Secrets_sharing.Pages.FilesModel
+@model Secrets_sharing.Pages.TextsModel
 @{
-    ViewData["Title"] = "Files";
+    ViewData["Title"] = "Texts";
 }
 <h3>@ViewData["Title"]</h3>
 
 @{
-    if (Model.Files is null)
+    if (Model.Texts is null)
     {
-        <lable>Failed loading files from database.</lable>
+        <lable>Failed loading texts from database.</lable>
         <br />
     }
-    else if (Model.Files.Count == 0)
+    else if (Model.Texts.Count == 0)
     {
-        <label>You do not have files.</label>
+        <label>You do not have texts.</label>
         <br />
     }
     else
     {
 
         <table>
-            @foreach (var f in Model.Files)
+            @foreach (var f in Model.Texts)
             {
 
                 <tr>
@@ -29,7 +29,7 @@
                         @f.Name
                     </td>
                     <td>
-                        <label>Download Link: </label>
+                        <label>Link: </label>
                         <input id="DownloadLink" type="url" value="@Url.PageLink(pageName: "Download", values: new { FileUrl =  f.Url })" />
                     </td>
                     <td>
@@ -43,7 +43,7 @@
         </table>
     }
 }
-@if (Model.Files is not null)
+@if (Model.Texts is not null)
 {
-    <a asp-page="Upload">Upload a new file</a>
+    <a asp-page="UploadText">Upload a new text</a>
 }

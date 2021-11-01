@@ -15,5 +15,6 @@ namespace Secrets_sharing.Models
             // Database.EnsureCreated(); // Create database if it doesn't exist
         }
         public DbSet<File> Files { get; set; }
+        public DbSet<Text> Texts { get; set; }
     }
 }

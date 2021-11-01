@@ -1,0 +1,33 @@
+﻿@page
+@model Secrets_sharing.Pages.UploadTextModel
+@{
+    ViewData["Title"] = "Upload Text";
+}
+<h3>@ViewData["Title"]</h3>
+<form method="post">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="Input.Name"></label><br />
+                <input asp-for="Input.Name">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Input.Content"></label><br />
+                <textarea asp-for="Input.Content"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Input.DeleteOnDownload"></label>
+                <input asp-for="Input.DeleteOnDownload" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Upload</button>
+            </td>
+        </tr>
+    </table>
+</form>

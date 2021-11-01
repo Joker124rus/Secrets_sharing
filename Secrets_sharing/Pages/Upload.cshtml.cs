@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 using Secrets_sharing.Models;
 
 namespace Secrets_sharing.Pages
 {
+    [Authorize]
     public class UploadModel : PageModel
     {
         private readonly UserManager<User> _userManager;
@@ -29,15 +31,15 @@ namespace Secrets_sharing.Pages
             [DataType(DataType.Upload)]
             public IFormFile File { get; set; }
 
-            [Display(Name = "Do you want to delete file on download?")]
+            [Display(Name = "Do you want to delete this file on download?")]
             public bool DeleteOnDownload { get; set; }
         }
         [BindProperty]
         public InputModel Input { get; set; }
         
-        public string GenerateUrl()
+        public string GenerateUrl() // Method to generate unique url to file
         {
-            string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-+";
+            string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-";
             string url = "";
             var rand = new Random();
             for (int i = 0; i < 10; i++)
@@ -63,8 +65,12 @@ namespace Secrets_sharing.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             var currentUser = await _userManager.GetUserAsync(User); // Get current user
-            var file = new Models.File {Name = Input.File.FileName, Url = GenerateUrl(), DeleteOnDownload = Input.DeleteOnDownload }; // Create new file object
-            byte[] imageData = null; // Array of bytes
+
+            var file = new Models.File { Name = Input.File.FileName, 
+                                         Url = GenerateUrl(),
+                                         DeleteOnDownload = Input.DeleteOnDownload };
+
+            byte[] imageData = null;
 
             using (var binaryReader = new BinaryReader(Input.File.OpenReadStream())) // Create reader to read bytes
             {

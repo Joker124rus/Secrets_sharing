@@ -21,17 +21,35 @@ namespace Secrets_sharing.Pages
 
         [BindProperty(SupportsGet = true)]
         public string FileUrl { get; set; }
+        
+        public string TextContent { get; set; }
         public IActionResult OnGet()
         {
-            var file = _context.Files.First(f => f.Url == FileUrl);
-            var path = System.IO.Path.GetTempFileName();
-            System.IO.File.WriteAllBytes(path, file.Bytes);
+            if (_context.Files.Any(f => f.Url == FileUrl))
+            {
+            var file = _context.Files.First(f => f.Url == FileUrl); // Find file which url equals to given url
+            var path = Path.GetTempFileName(); // Creating new temporary file
+            System.IO.File.WriteAllBytes(path, file.Bytes); // Write bytes to temp file
             if (file.DeleteOnDownload == true)
             {
                 _context.Files.Remove(file);
                 _context.SaveChanges();
             }
-            return PhysicalFile(path, MimeTypes.GetMimeType(path), file.Name);
+            return PhysicalFile(path, MimeTypes.GetMimeType(path), file.Name); // Return requested file
+            }
+            else
+            {
+                var text = _context.Texts.First(t => t.Url == FileUrl);
+                TextContent = text.Content;
+
+                if (text.DeleteOnDownload == true)
+                {
+                    _context.Texts.Remove(text);
+                    _context.SaveChanges();
+                }
+
+                return Page();
+            }
         }
     }
 }
