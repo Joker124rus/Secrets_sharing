@@ -76,7 +76,7 @@ namespace Secrets_sharing.Pages
             {
                 imageData = binaryReader.ReadBytes((int)Input.File.Length); // Write bytes to array
             }
-            file.Bytes = imageData; 
+            file.Bytes = imageData;
 
             _context.Entry(currentUser).Collection(u => u.Files).Load();
             currentUser.Files.Add(file);

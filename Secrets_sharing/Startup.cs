@@ -48,7 +48,7 @@ namespace Secrets_sharing
                 // User settings
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
             });
             services.ConfigureApplicationCookie(options =>
             {

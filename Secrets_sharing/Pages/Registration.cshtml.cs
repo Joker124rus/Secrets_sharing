@@ -12,18 +12,21 @@ namespace Secrets_sharing.Pages
 {
     public class RegistrationModel : PageModel
     {
+        private readonly ApplicationContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        public RegistrationModel(SignInManager<User> signInManager,
+        public RegistrationModel(ApplicationContext context,
+                                 SignInManager<User> signInManager,
                                  UserManager<User> userManager)
         {
+            _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
         }
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Incorrect email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -45,11 +48,16 @@ namespace Secrets_sharing.Pages
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            var result1 = _context.Users.Any(u => u.Email == Input.Email );
+            if (result1)
+            {
+                ModelState.AddModelError("Input.Email", "Email already exists");
+            }
             if (ModelState.IsValid)
             {
                 var user = new User { Email = Input.Email, UserName = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password); // Trying to create the user
-                if (result.Succeeded) // If succeded
+                if (result.Succeeded) // If user created
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false); // Authenticate the user
                     return RedirectToPage("Index");
