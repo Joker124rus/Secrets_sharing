@@ -24,17 +24,17 @@ namespace Secrets_sharing.Pages
         public void OnGet()
         {
             var user = _userManager.GetUserAsync(User).Result; // Get current user
-            _context.Entry(user).Collection(u => u.Files).Load(); // Get related to current user collection of files
+            if (user.Files == null)
+            {
+                _context.Entry(user).Collection(u => u.Files).Load(); // Get related to current user collection of files
+            }
             Files = user.Files;
         }
 
-        public IActionResult OnPost(string Url)
+        public IActionResult OnPost(int id)
         {
-            var file = _context.Files.First(f => f.Url == Url);
-            _context.Files.Remove(file);
-            _context.SaveChanges();
-
-            return RedirectToPage("Files");
+            _context.Delete<File>(id);
+            return RedirectToPage();
         }
     }
 }

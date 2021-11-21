@@ -27,8 +27,8 @@ namespace Secrets_sharing
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection)); // Add db context
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>(); // Add user
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
             services.AddRazorPages();
             services.Configure<IdentityOptions>(options => // Identity settings
             {

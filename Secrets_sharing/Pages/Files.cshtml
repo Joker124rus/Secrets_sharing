@@ -4,7 +4,6 @@
     ViewData["Title"] = "Files";
 }
 <h3>@ViewData["Title"]</h3>
-
 @{
     if (Model.Files is null)
     {
@@ -34,7 +33,7 @@
                     </td>
                     <td>
                         <form method="post">
-                            <input name="Url" type="hidden" value="@f.Url" />
+                            <input name="id" type="hidden" value="@f.Id" />
                             <input type="submit" value="Delete" />
                         </form>
                     </td>
