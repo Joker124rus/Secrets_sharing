@@ -27,6 +27,7 @@ namespace Secrets_sharing.Tests
 
                 // Act
                 db.Delete<File>(id);
+
                 // Assert
                 var actualFiles = db.Files.AsNoTracking().ToList();
                 Assert.Equal(

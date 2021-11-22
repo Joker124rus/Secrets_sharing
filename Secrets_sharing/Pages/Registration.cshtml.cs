@@ -51,7 +51,7 @@ namespace Secrets_sharing.Pages
             var result1 = _context.Users.Any(u => u.Email == Input.Email );
             if (result1)
             {
-                ModelState.AddModelError("Input.Email", "Email already exists");
+                ModelState.AddModelError("Input.Email", "This email already exists");
             }
             if (ModelState.IsValid)
             {

@@ -43,7 +43,7 @@ namespace Secrets_sharing.Pages
 
             if (ModelState.IsValid)
             {
-                await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, isPersistent: false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, isPersistent: false, lockoutOnFailure: false);
                 return RedirectToPage("Index");
             }
             return Page();
