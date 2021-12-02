@@ -27,28 +27,26 @@ namespace Secrets_sharing.Pages
         {
             if (_context.Files.Any(f => f.Url == FileUrl))
             {
-            var file = _context.Files.First(f => f.Url == FileUrl); // Find file which url equals to given url
-            var path = Path.GetTempFileName(); // Creating new temporary file
-            System.IO.File.WriteAllBytes(path, file.Bytes); // Write bytes to temp file
-            if (file.DeleteOnDownload == true)
-            {
-                _context.Files.Remove(file);
-                _context.SaveChanges();
-            }
-            return PhysicalFile(path, MimeTypes.GetMimeType(path), file.Name); // Return requested file
+                var file = _context.GetFileByUrl(FileUrl); // Get file which url equals to given url
+                var path = Path.GetTempFileName(); // Creating new temporary file
+                System.IO.File.WriteAllBytes(path, file.Bytes); // Write bytes to temp file
+                if (file.DeleteOnDownload == true)
+                {
+                    _context.Delete<Models.File>(file.Id);
+                }
+                return PhysicalFile(path, MimeTypes.GetMimeType(path), file.Name); // Return requested file
             }
             else
             {
-                var text = _context.Texts.First(t => t.Url == FileUrl);
+                var text = _context.GetTextByUrl(FileUrl);
                 TextContent = text.Content;
 
                 if (text.DeleteOnDownload == true)
                 {
-                    _context.Texts.Remove(text);
-                    _context.SaveChanges();
+                    _context.Delete<Text>(text.Id);
                 }
 
-                return Page();
+                return Page(); // Show the content of the  text on page
             }
         }
     }

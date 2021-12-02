@@ -29,7 +29,7 @@ namespace Secrets_sharing.Tests
             pageModel.ModelState.AddModelError("Password", "Password is required");
 
             // Act
-            var result = await pageModel.OnPostAsync();
+            var result = await pageModel.OnPostAsync("Test");
 
             // Assert
             Assert.IsType<PageResult>(result);
@@ -48,14 +48,16 @@ namespace Secrets_sharing.Tests
             {
                 Input = new LoginModel.InputModel { Email = "Email@email.com", Password = "1234" }
             };
+            var signInResult = Microsoft.AspNetCore.Identity.SignInResult.Success;
+            mockSignInManager.Setup(x => x.PasswordSignInAsync(pageModel.Input.Email, pageModel.Input.Password, false, false)).Returns(Task.FromResult(signInResult));
 
             // Act
-            var result = await pageModel.OnPostAsync();
+            var result = await pageModel.OnPostAsync("Test");
 
             // Assert
             mockSignInManager.Verify(x => x.PasswordSignInAsync(pageModel.Input.Email, pageModel.Input.Password, false, false));
-            Assert.IsType<RedirectToPageResult>(result);
-            Assert.Equal("Index", (result as RedirectToPageResult).PageName);
+            Assert.IsType<LocalRedirectResult>(result);
+            Assert.Equal("Test", (result as LocalRedirectResult).Url);
 
         }
     }

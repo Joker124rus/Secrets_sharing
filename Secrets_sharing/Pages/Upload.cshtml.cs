@@ -37,7 +37,7 @@ namespace Secrets_sharing.Pages
         [BindProperty]
         public InputModel Input { get; set; }
         
-        public string GenerateUrl() // Method to generate unique url to file
+        public string GenerateUrl() // Method used to generate unique url to file
         {
             string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-";
             string url = "";

@@ -26,7 +26,7 @@ namespace Secrets_sharing.Pages
             var user = _userManager.GetUserAsync(User).Result; // Get current user
             if (user.Files == null)
             {
-                _context.Entry(user).Collection(u => u.Files).Load(); // Get related to current user collection of files
+                _context.Entry(user).Collection(u => u.Files).Load(); // Get a collection of files related to current user
             }
             Files = user.Files;
         }

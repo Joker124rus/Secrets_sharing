@@ -17,6 +17,17 @@ namespace Secrets_sharing.Models
         public DbSet<File> Files { get; set; }
         public DbSet<Text> Texts { get; set; }
 
+        public File GetFileByUrl(string Url)
+        {
+            var file = Files.First(f => f.Url == Url);
+            return file;
+        }
+        public Text GetTextByUrl(string Url)
+        {
+            var text = Texts.First(f => f.Url == Url);
+            return text;
+        }
+
         public void Delete<T>(int id) where T: class
         {
             var obj = Find<T>(id);

@@ -33,18 +33,29 @@ namespace Secrets_sharing.Pages
 
         [BindProperty]
         public InputModel Input { get; set; }
-        public void OnGet()
+        public string ReturnUrl { get; set; }
+        public void OnGet(string returnUrl = null)
         {
-
+            returnUrl ??= Url.Content("~/");
+            ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            returnUrl ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, isPersistent: false, lockoutOnFailure: false);
-                return RedirectToPage("Index");
+                // return RedirectToPage("Index");
+                if (result.Succeeded)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    return Page();
+                }
             }
             return Page();
         }
