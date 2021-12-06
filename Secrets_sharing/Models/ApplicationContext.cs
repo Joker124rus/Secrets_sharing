@@ -42,9 +42,9 @@ namespace Secrets_sharing.Models
         {
             return new List<File>
             {
-                new File { Id = 1, Name = "Resolution" },
-                new File { Id = 2, Name = "Solution" },
-                new File { Id = 3, Name = "Salvation" }
+                new File { Id = 1, Name = "Resolution", Url = "123" },
+                new File { Id = 2, Name = "Solution", Url = "234" },
+                new File { Id = 3, Name = "Salvation", Url = "345" }
             };
         }
         public static List<Text> AddTestTexts()

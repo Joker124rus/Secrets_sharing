@@ -35,5 +35,24 @@ namespace Secrets_sharing.Tests
                     actualFiles.OrderBy(f => f.Id).Select(f => f.Name));
             }
         }
+        [Fact]
+        public void GetFileByUrl_ReturnFile()
+        {
+            // Arrange
+            using (var db = new ApplicationContext(TestDbConnection.TestDbContextOptions()))
+            {
+                var files = ApplicationContext.AddTestFiles();
+                db.AddRange(files);
+                db.SaveChanges();
+                var url = "234";
+                var expectedFile = new File { Id = 2, Name = "Solution", Url = "234" };
+
+                // Act
+                var actualFile = db.GetFileByUrl(url);
+
+                // Assert
+                Assert.Equal(expectedFile.Name, actualFile.Name);
+            }
+        }
     }
 }

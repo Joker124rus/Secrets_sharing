@@ -20,12 +20,18 @@ namespace Secrets_sharing.Tests
         public async Task OnPostAsync_AnIncorrectModel_ReturnsAPageResult()
         {
             // Arrange
-            var mockStore = new Mock<IUserStore<User>>();            
-            var mockUserManager = new Mock<UserManager<User>>(mockStore.Object, null, null, null, null, null, null, null, null);
+            var mockStore = new Mock<IUserStore<User>>();
+            var userManager = new UserManager<User>(mockStore.Object, null, null, null, null, null, null, null, null);
             var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             var mockClaimsFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockSignInManager = new Mock<SignInManager<User>>(mockUserManager.Object, mockHttpContextAccessor.Object, mockClaimsFactory.Object, null, null, null, null);
-            var pageModel = new LoginModel(mockSignInManager.Object);
+            var signInManager = new SignInManager<User>(userManager,
+                                                        mockHttpContextAccessor.Object,
+                                                        mockClaimsFactory.Object,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null);
+            var pageModel = new LoginModel(signInManager);
             pageModel.ModelState.AddModelError("Password", "Password is required");
 
             // Act
@@ -35,27 +41,35 @@ namespace Secrets_sharing.Tests
             Assert.IsType<PageResult>(result);
 
         }
+
         [Fact]
         public async Task OnPostAsync_ACorrectModel_UserSignedIn_ReturnsARedirectToPageIndex()
         {
             // Arrange
             var mockStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockStore.Object, null, null, null, null, null, null, null, null);
+            var userManager = new UserManager<User>(mockStore.Object, null, null, null, null, null, null, null, null);
             var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             var mockClaimsFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockSignInManager = new Mock<SignInManager<User>>(mockUserManager.Object, mockHttpContextAccessor.Object, mockClaimsFactory.Object, null, null, null, null);
+            var mockSignInManager = new Mock<SignInManager<User>>(userManager,
+                                                                  mockHttpContextAccessor.Object,
+                                                                  mockClaimsFactory.Object,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null);
             var pageModel = new LoginModel(mockSignInManager.Object)
             {
                 Input = new LoginModel.InputModel { Email = "Email@email.com", Password = "1234" }
             };
             var signInResult = Microsoft.AspNetCore.Identity.SignInResult.Success;
-            mockSignInManager.Setup(x => x.PasswordSignInAsync(pageModel.Input.Email, pageModel.Input.Password, false, false)).Returns(Task.FromResult(signInResult));
+            mockSignInManager.Setup(x => x.PasswordSignInAsync(pageModel.Input.Email, pageModel.Input.Password, false, false))
+                                          .Returns(Task.FromResult(signInResult));
 
             // Act
             var result = await pageModel.OnPostAsync("Test");
 
             // Assert
-            mockSignInManager.Verify(x => x.PasswordSignInAsync(pageModel.Input.Email, pageModel.Input.Password, false, false));
+            // mockSignInManager.Verify(x => x.PasswordSignInAsync(pageModel.Input.Email, pageModel.Input.Password, false, false));
             Assert.IsType<LocalRedirectResult>(result);
             Assert.Equal("Test", (result as LocalRedirectResult).Url);
 
